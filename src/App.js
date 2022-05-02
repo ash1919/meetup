@@ -1,24 +1,24 @@
-import logo from './logo.svg';
+
+import React from 'react';
 import './App.css';
+import Navbar from './component/navbar';
+import Hero from './component/hero';
+import SearchBar from './component/searchBar';
+import ListOfSpeakers from './component/listOfSpeakers';
+import { Footer } from './component/footer';
+import { StickyItem } from './component/stickyItem';
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    <Navbar />
+    <Hero />
+    <SearchBar />
+    {/* <ListOfSpeakers /> */}
+    <Footer />
+    <StickyItem />
+    </>
   );
 }
 
