@@ -1,25 +1,23 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import Navbar from './component/navbar';
 import Hero from './component/hero';
-import SearchBar from './component/searchBar';
-import ListOfSpeakers from './component/listOfSpeakers';
+import ListOfSpeakers from './component/speakers';
 import { Footer } from './component/footer';
 import { StickyItem } from './component/stickyItem';
 
 
-function App() {
+const Meetup=() =>{
   return (
     <>
     <Navbar />
     <Hero />
-    <SearchBar />
-    {/* <ListOfSpeakers /> */}
+    <ListOfSpeakers />
     <Footer />
     <StickyItem />
     </>
   );
 }
 
-export default App;
+export default Meetup;

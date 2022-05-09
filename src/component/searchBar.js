@@ -1,11 +1,27 @@
-import React from 'react'
-import "./listOfSpeakers"
-import ListOfSpeakers from './listOfSpeakers'
+import React, {useState} from 'react'
+import "./speakers"
 import ReactDOM from 'react-dom/client';
 
-export default function SearchBar(){
+export default function SearchBar({filter}){
+  const [debounceTimeout, setDebounceTimeout] = useState(null);
+
+  const debounceSearch = (event, debounceTimeout) => {
+    const value = event.target.value;
+    // filter(value);
+    try{
+    if (debounceTimeout) {
+      clearTimeout(debounceTimeout);
+    }
+    const timeout = setTimeout(() => {
+      console.log(value)
+       filter(value);
+    }, 500);
+    setDebounceTimeout(timeout);
+  }catch(err){
+    console.log(err);  
+  }
+};
   return (
-    <ListOfSpeakers>
 <section>
         <form className=" container pt-10 text-white relative bg-no-repeat">
             <svg
@@ -25,11 +41,10 @@ export default function SearchBar(){
             <input
               type="text"
               placeholder="Find speakers"
+              onChange={(e)=> debounceSearch(e,debounceTimeout)}
               className="w-full border-transparent caret-white rounded p-4 pl-16 mx-auto bg-[#CDCDCD1A] form-control"
             />
           </form>
-    </section>
-    </ListOfSpeakers>
-    
+    </section> 
   )
 }

@@ -1,8 +1,9 @@
 import React from "react";
 
 export default function Hero() {
+  
   return (
-    <section className="bg-black ">
+    <section className="bg-black">
       <div className="container sm:contianer flex flex-col items-center justify-center pt-24 text-white space-y-12  ">
         <header className=" text-4xl lg:text-5xl font-bold font-opensans text-center">
           <h1>Speakers & Sponsers</h1>

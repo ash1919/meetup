@@ -20,7 +20,7 @@ module.exports = {
         darkgrey:'#5E5E5E',
       },
       backgroundImage:{
-        'hero-illustration':"url('./images/search-icon.png')",
+        'heroIllustration':"url('../public/images/heroBgIllustration.png')",
         'cardbg':' linear-gradient(-70.13deg, #85EB7D -48.23%, rgba(133, 235, 125, 0.1375) 30.07%, rgba(133, 235, 125, 0) 97.26%)',
       },
       padding:{
