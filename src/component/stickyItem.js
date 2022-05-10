@@ -1,23 +1,9 @@
-import React, { useEffect , useState } from "react";
+import React from "react";
 import { Link, useLocation } from "react-router-dom";
 
 export const StickyItem = (props) => {
-  // const [attribute,setAttribute]=useState("");
-  // const location = useLocation();
-  // const [pathname,setPathname]=useState("")
-  // const handleClick=()=>{
-  //   if(location.pathname==="/sponsor"){
-  //     setAttribute("")
-  //   }
-  // }
 const location = useLocation();
-    
-  
-  useEffect(() => {
-  console.log(location.pathname); 
-  }, [])
-  
-  
+
   return (
     <section>
       <div className="w-full fixed bottom-0 mb-0 left-0">

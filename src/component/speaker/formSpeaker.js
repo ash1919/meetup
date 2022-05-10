@@ -5,12 +5,12 @@ import { StickyItem } from "../stickyItem";
 const FormSpeaker = () => {
   return (
     <div className="all-form mx-auto w-[90%] md:w-[80%] lg:w-[70%] shadow-xl mb-10">
-      <form action="./sponsorship.html" className="mainform">
+      <form>
         <div className="sm:flex both-side-form colorWhite">
           <div className="left-form w-[100%] md:w-[50%]">
             <div className="px-3 my-5 text-center">
               <label
-                for="company"
+                htmlFor="company"
                 className="tracking-wide text-gray-200 mb-2 text-2xl sm:text-3xl lg:text-4xl font-bold font-OpenSansbold"
               >
                 {" "}
@@ -65,7 +65,7 @@ const FormSpeaker = () => {
           <div className="right-form w-[100%] md:w-[50%]">
             <div className="px-3 my-5 text-center">
               <label
-                for="title"
+                htmlFor="title"
                 className="tracking-wide text-gray-200 mb-2 text-2xl sm:text-3xl lg:text-4xl font-bold font-OpenSansbold"
               >
                 {" "}
@@ -109,10 +109,10 @@ const FormSpeaker = () => {
                 type="radio"
                 name="radio"
                 className="hidden mr-4"
-                checked
+                
               />
               <label
-                for="radio1"
+                htmlFor="radio1"
                 className="flex items-center cursor-pointer text-white font-medium font-DMSansmedium"
               >
                 <span className="w-4 h-4 inline-block rounded-full border border-grey mr-2 md:mr-4"></span>
@@ -128,7 +128,7 @@ const FormSpeaker = () => {
                 className="hidden mr-4"
               />
               <label
-                for="radio2"
+                htmlFor="radio2"
                 className="flex items-center cursor-pointer text-white font-medium font-DMSansmedium"
               >
                 <span className="w-4 h-4 inline-block rounded-full border border-grey mr-2 md:mr-4"></span>
@@ -144,7 +144,7 @@ const FormSpeaker = () => {
                 className="hidden mr-4"
               />
               <label
-                for="radio3"
+                htmlFor="radio3"
                 className="flex items-center cursor-pointer text-white font-medium font-DMSansmedium"
               >
                 <span className="w-4 h-4 inline-block rounded-full border border-grey mr-2 md:mr-4"></span>
@@ -160,7 +160,7 @@ const FormSpeaker = () => {
                 className="hidden mr-4"
               />
               <label
-                for="radio4"
+                htmlFor="radio4"
                 className="flex items-center cursor-pointer text-white font-medium font-DMSansmedium"
               >
                 <span className="w-4 h-4 inline-block rounded-full border border-grey mr-2 md:mr-4"></span>

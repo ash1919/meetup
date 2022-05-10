@@ -1,13 +1,9 @@
 import React from "react";
-import {Link} from "react-router-dom";
+
 const FormSponsor = () => {
-  //   const [header] = React.useState({
-  //   });
-  //   const [state] = React.useState([
-  //   ]);
   return (
     <div className="all-form mx-auto w-[90%] md:w-[80%] lg:w-[70%] shadow-xl mb-10">
-      <form action="./sponsorship.html" className="mainform">
+      <form >
         <div className="sm:flex both-side-form colorWhite">
           <div className="left-form w-[100%] md:w-[50%]">
             <div className="px-3 my-5 text-center">
