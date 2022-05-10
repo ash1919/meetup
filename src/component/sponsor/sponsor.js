@@ -1,13 +1,19 @@
 import React from 'react'
-import About from './About'
+
+import Navbar from '../navbar'
+import {Footer} from '../speaker/footer2'
+import { StickyItem } from '../stickyItem'
+import FormSponsor from './formSponsor'
 import Banner from './Banner'
 
 
 export const Sponsor = () => {
   return (
     <div>
+        <Navbar />
         <Banner />
-        <About />
+        <FormSponsor />
+        <Footer />
     </div>
   )
 }

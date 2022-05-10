@@ -1,9 +1,8 @@
 import React from "react";
-const About = () => {
-  //   const [header] = React.useState({
-  //   });
-  //   const [state] = React.useState([
-  //   ]);
+import {Link} from "react-router-dom"
+import { StickyItem } from "../stickyItem";
+
+const FormSpeaker = () => {
   return (
     <div className="all-form mx-auto w-[90%] md:w-[80%] lg:w-[70%] shadow-xl mb-10">
       <form action="./sponsorship.html" className="mainform">
@@ -171,40 +170,45 @@ const About = () => {
           </div>
         </div>
 
-        <div className="attend-button sm:w-full text-center mb-20 pb-20 sm:pb-10 mt-10 sm:mb-10">
-          <button className="flex items-center mx-auto bg-green-600 text-white py-4 px-14 hover:bg-green-800 border-none rounded-lg font-medium font-DMSansmedium">
+        <div className="attend-button sm:w-full text-center mb-18 md:mb-20 pb-8 md:pb-20 sm:pb-10 mt-10 sm:mb-10">
+          <button className="flex items-center mx-auto bg-green text-white py-4 px-14 hover:bg-darkgreen  border-none rounded-lg font-medium font-DMSansmedium">
             {" "}
             Submit{" "}
           </button>
         </div>
       </form>
 
-      <div className="bottom-button z-10 block sm:flex fixed left-0 w-full bottom-0 rounded-none">
-        <div className="w-[100%] sm:w-[50%] text-center items-center border-r-2 rounded-none">
+      {/* <div className="bottom-button z-10 block sm:flex fixed left-0 w-full bottom-0 rounded-none">
+        <div className="w-[100%] md:w-[50%]  bg-green  hover:bg-darkgreen text-center items-center md:border-r-2 md:border-white border-transparent ">
           <button className="w-[100%] flex justify-center items-center mx-auto bg-green-600 text-sm text-white py-6 px-10 hover:bg-green-800 border-none font-medium font-DMSansmedium">
             {" "}
             <img
-              src="../images/mike 2.png"
-              width="25px"
-              className="bg-transparent"
+              src="/images/mike.png"
+              className="md:w-10 w-8 pr-2"
+              alt='icon'
             />{" "}
-            Request speaker{" "}
+           <Link to="/sponsor"><p className="text-white lg:text-2xl xl:text-xl text-sm">
+                Request speaker
+              </p>{" "}</Link> 
           </button>
         </div>
-        <div className="sm:block hidden w-[100%] sm:w-[50%] text-center items-center rounded-none">
+        <div className="md:block bg-green  hover:bg-darkgreen hidden w-[100%] md:w-[50%] text-center items-center rounded-none">
           <button className="w-[100%] flex justify-center items-center mx-auto hover:bg-green-800 text-sm text-white py-6 px-10 bg-green-600 border-none font-medium font-DMSansmedium">
             {" "}
             <img
-              src="../images/money-sack 1.png"
-              width="25px"
-              className="bg-transparent"
+              src="/images/money-sack.png"
+              className="md:w-10 w-8 pr-2"
+              alt='icon'
             />{" "}
-            Request sponsorship{" "}
+            <p className="text-white lg:text-2xl xl:text-xl text-sm">
+                Request sponsorship
+              </p>{" "}
           </button>
         </div>
-      </div>
+      </div> */}
+      <StickyItem hideSpeaker={true} />
     </div>
   );
 };
 
-export default About;
+export default FormSpeaker;
