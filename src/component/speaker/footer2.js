@@ -4,7 +4,7 @@ export const Footer = () => {
   return (
     <footer className="bg-[#221F1A]">
         <div
-          className="flex flex-col md:flex-row items-center space-x-8 text-white w-full sm:container p-6 mt-24 md:mb-20 mb-16 sm:mb-16 lg:mb-20 xl:mb-20"
+          className="flex flex-col md:flex-row items-center space-x-8 text-white w-full sm:container p-6 mt-24 md:mb-20 mb-14 sm:mb-14 lg:mb-20 xl:mb-20"
         >
           <div>
             <img

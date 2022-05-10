@@ -14,6 +14,7 @@ export const Sponsor = () => {
         <Banner />
         <FormSponsor />
         <Footer />
+        <StickyItem />
     </div>
   )
 }

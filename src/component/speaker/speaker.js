@@ -1,5 +1,6 @@
 import React from 'react'
 import Navbar from '../navbar'
+import { StickyItem } from '../stickyItem'
 import Banner from './Banner'
 import { Footer } from './footer2'
 import FormSpeaker from './formSpeaker'
@@ -11,6 +12,7 @@ export const Speaker = () => {
       <Banner />
       <FormSpeaker />
       <Footer/>
+      <StickyItem />
     </div>
   )
 }

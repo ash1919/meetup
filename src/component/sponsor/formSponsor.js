@@ -86,35 +86,6 @@ const FormSponsor = () => {
           </button>
         </div>
       </form>
-
-       <div className="bottom-button z-10 block sm:flex fixed left-0 w-full bottom-0 rounded-none">
-        <div className="w-[100%] md:w-[50%]  bg-green  hover:bg-darkgreen text-center items-center md:border-r-2 md:border-white border-transparent ">
-          <button className="w-[100%] flex justify-center items-center mx-auto bg-green-600 text-sm text-white py-6 px-10 hover:bg-green-800 border-none font-medium font-DMSansmedium">
-            {" "}
-            <img
-              src="/images/mike.png"
-              className="md:w-10 w-8 pr-2"
-              alt='icon'
-            />{" "}
-           <Link to="/sponsor"><p className="text-white lg:text-2xl xl:text-xl text-sm">
-                Request speaker
-              </p>{" "}</Link> 
-          </button>
-        </div>
-        <div className="md:block bg-green  hover:bg-darkgreen hidden w-[100%] md:w-[50%] text-center items-center rounded-none">
-          <button className="w-[100%] flex justify-center items-center mx-auto hover:bg-green-800 text-sm text-white py-6 px-10 bg-green-600 border-none font-medium font-DMSansmedium">
-            {" "}
-            <img
-              src="/images/money-sack.png"
-              className="md:w-10 w-8 pr-2"
-              alt='icon'
-            />{" "}
-            <p className="text-white lg:text-2xl xl:text-xl text-sm">
-                Request sponsorship
-              </p>{" "}
-          </button>
-        </div>
-      </div> 
     </div>
   );
 };
