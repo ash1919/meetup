@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import 'flowbite';
 
 
 
 const FormSponsor = () => {
+
   const userDetailsInit = {
     organizationName: "",
     address: "",
@@ -13,6 +15,16 @@ const FormSponsor = () => {
     userName: "",
     email: "",
   };
+  const[isValid,setvalidaiton]=useState(
+    {
+      organizationName: true,
+      address: false,
+      date: false,
+      phoneNumber: false,
+      userName: false,
+      email: false,
+    }
+  );
   const [userDetails, setUserDetails] = useState(userDetailsInit);
   const handleInputChange = (e) => {
     const name = e.target.name;
@@ -23,7 +35,44 @@ const FormSponsor = () => {
   const setPhoneNumber=(value)=>{
     setUserDetails({ ...userDetails, "phoneNumber": value }); 
   }
-  const handleFormSubmit = (e) => {};
+
+  const handleFormSubmit = (e) => {
+    
+  };
+  useEffect(()=>{
+    validateForm();
+  },[userDetails])
+
+ const validateForm=()=>{
+    if(userDetails.organizationName == ''&& !userDetails.organizationName.replace(/\s/g, "").length ){
+      setvalidaiton({...isValid,organizationName:false});
+    }
+    if(userDetails.address !== '' && !userDetails.address.replace(/\s/g, "").length){
+      setvalidaiton({...isValid,address:true});
+    }
+    if(userDetails.date !== '' && !userDetails.date.replace(/\s/g, "").length){
+      setvalidaiton({...isValid,date:true});
+    }
+    if(userDetails.phoneNumber !== '' && !userDetails.phoneNumber.replace(/\s/g, "").length){
+      setvalidaiton({...isValid,phoneNumber:true});
+    }
+    if(userDetails.userName !== '' && !userDetails.userName.replace(/\s/g, "").length){
+      setvalidaiton({...isValid,userName:true});
+    }
+    if(userDetails.email !== '' && !userDetails.email.replace(/\s/g, "").length){
+      setvalidaiton({...isValid,email:true});
+    }
+    
+
+    
+  //   if (userDetails.replace(/\s/g, "").length === 0) {
+  //   return setFilterSpeaker(speakerDetails);
+  // } 
+  // else {
+  //   return setFilterSpeaker("");
+  // }
+ }
+ console.log(isValid);
 
   return (
     <div className="all-form mx-auto w-[90%] md:w-[80%] lg:w-[70%] shadow-xl mb-10">
@@ -44,7 +93,9 @@ const FormSponsor = () => {
                 name="organizationName"
                 placeholder="Org / College name"
                 onChange={(e) => handleInputChange(e)}
+                required
               />
+              {isValid.organizationName===true?( <p className="mt-2 text-sm text-red-600 dark:text-red-500 text-left"><span className="font-medium">Oh, snapp!</span> Some error message.</p>):null}
             </div>
             <div className="px-3 my-5">
               <input
@@ -53,6 +104,7 @@ const FormSponsor = () => {
                 name="address"
                 placeholder="Address"
                 onChange={(e) => handleInputChange(e)}
+                required
               />
             </div>
             <div className="xl:flex">
@@ -63,6 +115,7 @@ const FormSponsor = () => {
                   name="date"
                   placeholder="date"
                   onChange={(e) => handleInputChange(e)}
+                  required
                 />
               </div>
             </div>
@@ -82,6 +135,7 @@ const FormSponsor = () => {
                 name="userName"
                 placeholder="Name"
                 onChange={(e) => handleInputChange(e)}
+                required
               />
             </div>
             <div className="px-3 my-2">
@@ -124,6 +178,7 @@ const FormSponsor = () => {
                 name="email"
                 placeholder="Email"
                 onChange={(e) => handleInputChange(e)}
+                required
               />
             </div>
           </div>

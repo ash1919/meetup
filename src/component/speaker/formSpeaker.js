@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import 'flowbite';
 
 const FormSpeaker = () => {
   const userDetailsInit = {
@@ -17,8 +18,9 @@ const FormSpeaker = () => {
     const name = e.target.name;
     const value = e.target.value;
     setUserDetails({ ...userDetails, [name]: value });
-    console.log(userDetails);
+    
   };
+  console.log(userDetails);
   const setPhoneNumber = (value) => {
     setUserDetails({ ...userDetails, phoneNumber: value });
   };
@@ -34,6 +36,7 @@ const FormSpeaker = () => {
                 className="selectOption minimal py-4 w-[100%] xl:w-[98%] bg-grayform text-white px-4 mb-3 rounded border-none font-medium font-DMSansmedium"
                 name="speakerName"
                 onChange={(e) => handleInputChange(e)}
+                required
               >
                 <option className="opt font-DMSansmedium">
                   {" "}
@@ -74,6 +77,7 @@ const FormSpeaker = () => {
                 name="organizationName"
                 placeholder="Org / College name"
                 onChange={(e) => handleInputChange(e)}
+                required
               />
             </div>
             <div className="px-3 my-5">
@@ -83,6 +87,7 @@ const FormSpeaker = () => {
                 name="address"
                 placeholder="Address"
                 onChange={(e) => handleInputChange(e)}
+                required
               />
             </div>
             <div className="xl:flex my-5">
@@ -91,19 +96,21 @@ const FormSpeaker = () => {
                   className="selectOption minimal py-4 w-[100%] xl:w-[100%] bg-grayform text-white px-4 mb-3 rounded border-none font-medium font-DMSansmedium"
                   name="modeOfEvent"
                   onChange={(e) => handleInputChange(e)}
+                  required
                 >
-                  <option className="font-DMSansmedium">
+                  <option className="font-DMSansmedium" disabled>
                     {" "}
                     Mode of the event{" "}
                   </option>
                   <option className="font-DMSansmedium">
                     {" "}
-                    Mode of the event{" "}
+                    Online{" "}
                   </option>
                   <option className="font-DMSansmedium">
                     {" "}
-                    Mode of the event{" "}
+                    Offline{" "}
                   </option>
+                  
                 </select>
               </div>
               <div className="px-3 w-[100%] xl:w-[50%] xl:text-right my-2 xl:my-0">
@@ -112,6 +119,7 @@ const FormSpeaker = () => {
                   className="w-[100%] xl:w-[98%] bg-grayform text-white rounded py-4 px-4 mb-3 border-none font-medium font-DMSansmedium"
                   name="date"
                   onChange={(e) => handleInputChange(e)}
+                  required
                 />
               </div>
             </div>
@@ -131,6 +139,7 @@ const FormSpeaker = () => {
                 name="userName"
                 placeholder="Name"
                 onChange={(e) => handleInputChange(e)}
+                required
               />
             </div>
             <div className="px-3 my-2 ">
@@ -172,6 +181,7 @@ const FormSpeaker = () => {
                 name="email"
                 placeholder="Email"
                 onChange={(e) => handleInputChange(e)}
+                required
               />
             </div>
           </div>
@@ -191,6 +201,7 @@ const FormSpeaker = () => {
                 className="hidden mr-4"
                 value={'0-50'}
                 onChange={(e) => handleInputChange(e)}
+                required
               />
               <label
                 htmlFor="radio1"
@@ -209,6 +220,7 @@ const FormSpeaker = () => {
                 className="hidden mr-4"
                 value={'50-100'}
                 onChange={(e) => handleInputChange(e)}
+                required
               />
               <label
                 htmlFor="radio2"

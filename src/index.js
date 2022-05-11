@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import Meetup from './meetup';
+import 'flowbite';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter as Router, Routes,Route} from "react-router-dom"
 import { Sponsor } from './component/sponsor/sponsor';

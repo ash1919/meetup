@@ -164,6 +164,12 @@ background-position-x: 98%;
 .react-tel-input .flag-dropdown.open .selected-flag {
   background-color:#bebebe!important ;
 }
+/* Autofill style */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus{
+  background-color: transparent !important;
+}
 
 /* **** */
 
