@@ -144,6 +144,27 @@ background: url("/public/images/arrow.png") no-repeat right #ddd;
 -webkit-appearance: none;
 background-position-x: 98%;
 }
+/* country flag */
+
+.react-tel-input .country-list .country.highlight{
+  background-color:#bebebe !important ;
+}
+.react-tel-input .country-list .country:hover{
+  background-color:#bebebe!important ;
+}
+.react-tel-input .flag-dropdown:hover{
+  background-color:#bebebe !important ;
+}
+/* .selected-flag:hover{
+  background-color:red !important ;
+} */
+/* .react-tel-input .selected-flag:hover{
+  background-color:red !important ;
+} */
+.react-tel-input .flag-dropdown.open .selected-flag {
+  background-color:#bebebe!important ;
+}
+
 /* **** */
 
 @media (max-width: 1200px) {

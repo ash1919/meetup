@@ -18,37 +18,7 @@ const Banner = () => {
               />
             </div>
           </div>
-          <div className="select-form mt-14 mb-4 px-3">
-            <div className="container">
-              <div className="select-box relative flex w-[100%] sm:w-[80%] md:w-[75%] lg:w-[60%] mx-auto text-left flex-col">
-                <select
-                  className="selectOption minimal py-4 w-[100%] xl:w-[98%] bg-grayform text-white px-4 mb-3 rounded border-none font-medium font-DMSansmedium"
-                  id=""
-                  placeholder=""
-                >
-                  <option className="opt font-DMSansmedium">
-                    {" "}
-                    Speaker requesting for{" "}
-                  </option>
-                  <option className="opt font-DMSansmedium">
-                    {" "}
-                    Speaker requesting for{" "}
-                  </option>
-                  <option className="opt font-DMSansmedium">
-                    {" "}
-                    Speaker requesting for{" "}
-                  </option>
-                </select>
-                <div className="search-box">
-                  <input
-                    type="text"
-                    className="text-white bg-focus w-full py-[12px] px-[16px] z-99 focus:outline-none opacity-0 delay-75"
-                    placeholder="Start Typing..."
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
+        
         </div>
       </div>
     </header>

@@ -1,11 +1,63 @@
-import React from "react";
-import {Link} from "react-router-dom"
-import { StickyItem } from "../stickyItem";
+import React, { useState } from "react";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 const FormSpeaker = () => {
+  const userDetailsInit = {
+    organizationName: "",
+    address: "",
+    date: "",
+    phoneNumber: "",
+    userName: "",
+    numAttendees:"",
+    email: "",
+  };
+  const [userDetails, setUserDetails] = useState(userDetailsInit);
+  const handleInputChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setUserDetails({ ...userDetails, [name]: value });
+    console.log(userDetails);
+  };
+  const setPhoneNumber = (value) => {
+    setUserDetails({ ...userDetails, phoneNumber: value });
+  };
+  const handleFormSubmit = (e) => {};
+
   return (
     <div className="all-form mx-auto w-[90%] md:w-[80%] lg:w-[70%] shadow-xl mb-10">
-      <form>
+      <form onSubmit={(e) => handleFormSubmit(e)}>
+        <div className="select-form mt-14 mb-4 px-3">
+          <div className="container">
+            <div className="select-box relative flex w-[100%] sm:w-[80%] md:w-[75%] lg:w-[60%] mx-auto text-left flex-col">
+              <select
+                className="selectOption minimal py-4 w-[100%] xl:w-[98%] bg-grayform text-white px-4 mb-3 rounded border-none font-medium font-DMSansmedium"
+                name="speakerName"
+                onChange={(e) => handleInputChange(e)}
+              >
+                <option className="opt font-DMSansmedium">
+                  {" "}
+                  Speaker requesting for{" "}
+                </option>
+                <option className="opt font-DMSansmedium">
+                  {" "}
+                  Speaker requesting for{" "}
+                </option>
+                <option className="opt font-DMSansmedium">
+                  {" "}
+                  Speaker requesting for{" "}
+                </option>
+              </select>
+              <div className="search-box">
+                <input
+                  type="text"
+                  className="text-white bg-focus w-full py-[12px] px-[16px] z-99 focus:outline-none opacity-0 delay-75"
+                  placeholder="Start Typing..."
+                />
+              </div>
+            </div>
+          </div>
+        </div>
         <div className="sm:flex both-side-form colorWhite">
           <div className="left-form w-[100%] md:w-[50%]">
             <div className="px-3 my-5 text-center">
@@ -19,24 +71,26 @@ const FormSpeaker = () => {
               <input
                 type="text"
                 className="w-full bg-grayform text-white rounded py-4 px-4 border-none mt-10 font-medium font-DMSansmedium"
-                id=""
+                name="organizationName"
                 placeholder="Org / College name"
+                onChange={(e) => handleInputChange(e)}
               />
             </div>
             <div className="px-3 my-5">
               <input
                 type="text"
                 className="w-full bg-grayform text-white rounded py-4 px-4 border-none font-medium font-DMSansmedium"
-                id=""
+                name="address"
                 placeholder="Address"
+                onChange={(e) => handleInputChange(e)}
               />
             </div>
             <div className="xl:flex my-5">
               <div className="px-3 w-[100%] xl:w-[50%] my-2 xl:my-0">
                 <select
                   className="selectOption minimal py-4 w-[100%] xl:w-[100%] bg-grayform text-white px-4 mb-3 rounded border-none font-medium font-DMSansmedium"
-                  id=""
-                  placeholder=""
+                  name="modeOfEvent"
+                  onChange={(e) => handleInputChange(e)}
                 >
                   <option className="font-DMSansmedium">
                     {" "}
@@ -56,8 +110,8 @@ const FormSpeaker = () => {
                 <input
                   type="date"
                   className="w-[100%] xl:w-[98%] bg-grayform text-white rounded py-4 px-4 mb-3 border-none font-medium font-DMSansmedium"
-                  id=""
-                  placeholder=""
+                  name="date"
+                  onChange={(e) => handleInputChange(e)}
                 />
               </div>
             </div>
@@ -74,24 +128,50 @@ const FormSpeaker = () => {
               <input
                 type="text"
                 className="w-full bg-grayform text-white rounded py-4 px-4 border-none mt-10 font-medium font-DMSansmedium"
-                id=""
+                name="userName"
                 placeholder="Name"
+                onChange={(e) => handleInputChange(e)}
               />
             </div>
-            <div className="px-3 my-2">
-              <input
-                type="number"
-                className="w-full  bg-grayform text-white rounded py-4 px-4 mb-3 border-none font-medium font-DMSansmedium"
-                id=""
-                placeholder="Enter your no."
+            <div className="px-3 my-2 ">
+              <PhoneInput
+                className="w-full bg-grayform text-black  py-3  rounded mb-3 border-none font-medium font-DMSansmedium"
+                country={"in"}
+                countryCodeEditable={false}
+                name="phoneNumber"
+                inputProps={{
+                  name: "phoneNumber",
+                  required: true,
+                }}
+                value={userDetails["phoneNumber"]}
+                onChange={(value) => setPhoneNumber(value)}
+                containerStyle={{
+                  fontFamily: "Open Sans",
+                  fontSize: "0.875rem",
+                  color: "white",
+                }}
+                inputStyle={{
+                  background: "transparent",
+                  border: "none",
+                  color: "white",
+                }}
+                buttonStyle={{
+                  background: "transparent",
+                  border: "none",
+                }}
+                dropdownStyle={{
+                  background: "#21201f",
+                }}
+                required
               />
             </div>
             <div className="px-3 my-2">
               <input
                 type="email"
                 className="w-full  bg-grayform text-white rounded py-4 px-4 mb-3 border-none font-medium font-DMSansmedium"
-                id=""
+                name="email"
                 placeholder="Email"
+                onChange={(e) => handleInputChange(e)}
               />
             </div>
           </div>
@@ -107,9 +187,10 @@ const FormSpeaker = () => {
               <input
                 id="radio1"
                 type="radio"
-                name="radio"
+                name="numAttendees"
                 className="hidden mr-4"
-                
+                value={'0-50'}
+                onChange={(e) => handleInputChange(e)}
               />
               <label
                 htmlFor="radio1"
@@ -124,8 +205,10 @@ const FormSpeaker = () => {
               <input
                 id="radio2"
                 type="radio"
-                name="radio"
+                name="numAttendees"
                 className="hidden mr-4"
+                value={'50-100'}
+                onChange={(e) => handleInputChange(e)}
               />
               <label
                 htmlFor="radio2"
@@ -140,8 +223,10 @@ const FormSpeaker = () => {
               <input
                 id="radio3"
                 type="radio"
-                name="radio"
+                name="numAttendees"
                 className="hidden mr-4"
+                value={'100-200'}
+                onChange={(e) => handleInputChange(e)}
               />
               <label
                 htmlFor="radio3"
@@ -156,8 +241,10 @@ const FormSpeaker = () => {
               <input
                 id="radio4"
                 type="radio"
-                name="radio"
+                name="numAttendees"
                 className="hidden mr-4"
+                value={'200+'}
+                onChange={(e) => handleInputChange(e)}
               />
               <label
                 htmlFor="radio4"
