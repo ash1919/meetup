@@ -1,64 +1,118 @@
 import React, { useState } from "react";
 import PhoneInput from "react-phone-input-2";
+import { speakerDetails } from "../const/speakerData";
 import "react-phone-input-2/lib/style.css";
-import 'flowbite';
+import "flowbite";
 
 const FormSpeaker = () => {
   const userDetailsInit = {
+    speakerName: "",
     organizationName: "",
     address: "",
+    modeOfEvent: "",
     date: "",
+    countryCode: "",
     phoneNumber: "",
     userName: "",
-    numAttendees:"",
+    numAttendees: "",
     email: "",
   };
+  const [isValid, setvalidaiton] = useState({
+    speakerName: true,
+    organizationName: true,
+    address: true,
+    modeOfEvent: true,
+    date: true,
+    phoneNumber: true,
+    userName: true,
+    email: true,
+    numAttendees: true,
+  });
+  const [number, setNumber] = useState();
   const [userDetails, setUserDetails] = useState(userDetailsInit);
   const handleInputChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
     setUserDetails({ ...userDetails, [name]: value });
-    
   };
-  console.log(userDetails);
-  const setPhoneNumber = (value) => {
-    setUserDetails({ ...userDetails, phoneNumber: value });
-  };
-  const handleFormSubmit = (e) => {};
 
+  const setPhoneNumber = (value, data) => {
+    setUserDetails({ ...userDetails, countryCode: data.dialCode });
+    setUserDetails({
+      ...userDetails,
+      phoneNumber: value.slice(data.dialCode.length),
+    });
+    setvalidaiton({ ...isValid, phoneNumber: true });
+    setNumber(value);
+  };
+
+  const validateForm = () => {
+    if (!userDetails.speakerName.replace(/\s/g, "").length) {
+      return setvalidaiton({ ...isValid, speakerName: false });
+    }
+    if (!userDetails.organizationName.replace(/\s/g, "").length) {
+      return setvalidaiton({ ...isValid, organizationName: false });
+    }
+    if (!userDetails.address.replace(/\s/g, "").length) {
+      return setvalidaiton({ ...isValid, address: false });
+    }
+    if (!userDetails.modeOfEvent.replace(/\s/g, "").length) {
+      return setvalidaiton({ ...isValid, modeOfEvent: false });
+    }
+    if (!userDetails.date.replace(/\s/g, "").length) {
+      return setvalidaiton({ ...isValid, date: false });
+    }
+    if (!userDetails.userName.replace(/\s/g, "").length) {
+      return setvalidaiton({ ...isValid, userName: false });
+    }
+    if (!userDetails.phoneNumber.replace(/\s/g, "").length) {
+      return setvalidaiton({ ...isValid, phoneNumber: false });
+    }
+    if (!userDetails.email.replace(/\s/g, "").length) {
+      return setvalidaiton({ ...isValid, email: false });
+    }
+    if (!userDetails.numAttendees.replace(/\s/g, "").length) {
+      return setvalidaiton({ ...isValid, numAttendees: false });
+    }
+  };
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    validateForm();
+  };
+  console.log(isValid);
+  console.log(userDetails);
   return (
     <div className="all-form mx-auto w-[90%] md:w-[80%] lg:w-[70%] shadow-xl mb-10">
-      <form onSubmit={(e) => handleFormSubmit(e)}>
-        <div className="select-form mt-14 mb-4 px-3">
-          <div className="container">
-            <div className="select-box relative flex w-[100%] sm:w-[80%] md:w-[75%] lg:w-[60%] mx-auto text-left flex-col">
-              <select
-                className="selectOption minimal py-4 w-[100%] xl:w-[98%] bg-grayform text-white px-4 mb-3 rounded border-none font-medium font-DMSansmedium"
-                name="speakerName"
-                onChange={(e) => handleInputChange(e)}
-                required
-              >
-                <option className="opt font-DMSansmedium">
-                  {" "}
-                  Speaker requesting for{" "}
-                </option>
-                <option className="opt font-DMSansmedium">
-                  {" "}
-                  Speaker requesting for{" "}
-                </option>
-                <option className="opt font-DMSansmedium">
-                  {" "}
-                  Speaker requesting for{" "}
-                </option>
-              </select>
-              <div className="search-box">
-                <input
-                  type="text"
-                  className="text-white bg-focus w-full py-[12px] px-[16px] z-99 focus:outline-none opacity-0 delay-75"
-                  placeholder="Start Typing..."
-                />
-              </div>
-            </div>
+      <form onSubmit={(e) => handleFormSubmit(e)} autoComplete="off">
+        <div className="select-form mt-14 mb-4 px-3 pb-6 md:pb-12">
+          <div className="select-box relative flex w-[100%] sm:w-[80%] md:w-[75%] lg:w-[60%] mx-auto text-left flex-col ">
+            <select
+              className="selectOption minimal py-4 w-[100%] xl:w-[98%] bg-grayform text-white px-4 mb-3 rounded border-none font-medium font-DMSansmedium"
+              name="speakerName"
+              onChange={(e) => {
+                setvalidaiton({ ...isValid, speakerName: true });
+                handleInputChange(e);
+              }}
+            >
+              <option className="opt font-DMSansmedium">
+                {" "}
+                Speaker requesting for{" "}
+              </option>
+              {speakerDetails.map((items) => {
+                return (
+                  <option className="opt font-DMSansmedium" key={items.id}>
+                    {" "}
+                    {items.speakerName}{" "}
+                  </option>
+                );
+              })}
+            </select>
+            {!isValid.speakerName && (
+              <p className="mt-2 text-sm text-red-600 dark:text-red-500 text-left">
+                <span className="font-medium">Warning!</span> Please enter the
+                speaker name.
+              </p>
+            )}
           </div>
         </div>
         <div className="sm:flex both-side-form colorWhite">
@@ -76,9 +130,17 @@ const FormSpeaker = () => {
                 className="w-full bg-grayform text-white rounded py-4 px-4 border-none mt-10 font-medium font-DMSansmedium"
                 name="organizationName"
                 placeholder="Org / College name"
-                onChange={(e) => handleInputChange(e)}
-                required
+                onChange={(e) => {
+                  setvalidaiton({ ...isValid, organizationName: true });
+                  handleInputChange(e);
+                }}
               />
+              {!isValid.organizationName && (
+                <p className="mt-2 text-sm text-red-600 dark:text-red-500 text-left">
+                  <span className="font-medium">Warning!</span> Please enter the
+                  organization/college name.
+                </p>
+              )}
             </div>
             <div className="px-3 my-5">
               <input
@@ -86,41 +148,58 @@ const FormSpeaker = () => {
                 className="w-full bg-grayform text-white rounded py-4 px-4 border-none font-medium font-DMSansmedium"
                 name="address"
                 placeholder="Address"
-                onChange={(e) => handleInputChange(e)}
-                required
+                onChange={(e) => {
+                  setvalidaiton({ ...isValid, address: true });
+                  handleInputChange(e);
+                }}
               />
+              {!isValid.address && (
+                <p className="mt-2 text-sm text-red-600 dark:text-red-500 text-left">
+                  <span className="font-medium">Warning!</span> Please enter the
+                  address details.
+                </p>
+              )}
             </div>
             <div className="xl:flex my-5">
               <div className="px-3 w-[100%] xl:w-[50%] my-2 xl:my-0">
                 <select
                   className="selectOption minimal py-4 w-[100%] xl:w-[100%] bg-grayform text-white px-4 mb-3 rounded border-none font-medium font-DMSansmedium"
                   name="modeOfEvent"
-                  onChange={(e) => handleInputChange(e)}
-                  required
+                  onChange={(e) => {
+                    setvalidaiton({ ...isValid, modeOfEvent: true });
+                    handleInputChange(e);
+                  }}
                 >
-                  <option className="font-DMSansmedium" disabled>
+                  <option className="font-DMSansmedium">
                     {" "}
                     Mode of the event{" "}
                   </option>
-                  <option className="font-DMSansmedium">
-                    {" "}
-                    Online{" "}
-                  </option>
-                  <option className="font-DMSansmedium">
-                    {" "}
-                    Offline{" "}
-                  </option>
-                  
+                  <option className="font-DMSansmedium"> Online </option>
+                  <option className="font-DMSansmedium"> Offline </option>
                 </select>
+                {!isValid.modeOfEvent && (
+                  <p className="mt-2 text-sm text-red-600 dark:text-red-500 text-left">
+                    <span className="font-medium">Warning!</span> Please enter
+                    the mode of event.
+                  </p>
+                )}
               </div>
               <div className="px-3 w-[100%] xl:w-[50%] xl:text-right my-2 xl:my-0">
                 <input
                   type="date"
                   className="w-[100%] xl:w-[98%] bg-grayform text-white rounded py-4 px-4 mb-3 border-none font-medium font-DMSansmedium"
                   name="date"
-                  onChange={(e) => handleInputChange(e)}
-                  required
+                  onChange={(e) => {
+                    setvalidaiton({ ...isValid, date: true });
+                    handleInputChange(e);
+                  }}
                 />
+                {!isValid.date && (
+                  <p className="mt-2 text-sm text-red-600 dark:text-red-500 text-left">
+                    <span className="font-medium">Warning!</span> Please enter
+                    the date of event.
+                  </p>
+                )}
               </div>
             </div>
           </div>
@@ -138,9 +217,17 @@ const FormSpeaker = () => {
                 className="w-full bg-grayform text-white rounded py-4 px-4 border-none mt-10 font-medium font-DMSansmedium"
                 name="userName"
                 placeholder="Name"
-                onChange={(e) => handleInputChange(e)}
-                required
+                onChange={(e) => {
+                  setvalidaiton({ ...isValid, userName: true });
+                  handleInputChange(e);
+                }}
               />
+              {!isValid.userName && (
+                <p className="mt-2 text-sm text-red-600 dark:text-red-500 text-left">
+                  <span className="font-medium">Warning!</span> Please enter the
+                  user name.
+                </p>
+              )}
             </div>
             <div className="px-3 my-2 ">
               <PhoneInput
@@ -150,10 +237,9 @@ const FormSpeaker = () => {
                 name="phoneNumber"
                 inputProps={{
                   name: "phoneNumber",
-                  required: true,
                 }}
-                value={userDetails["phoneNumber"]}
-                onChange={(value) => setPhoneNumber(value)}
+                value={number}
+                onChange={setPhoneNumber}
                 containerStyle={{
                   fontFamily: "Open Sans",
                   fontSize: "0.875rem",
@@ -171,8 +257,13 @@ const FormSpeaker = () => {
                 dropdownStyle={{
                   background: "#21201f",
                 }}
-                required
               />
+              {!isValid.phoneNumber && (
+                <p className="mt-2 text-sm text-red-600 dark:text-red-500 text-left">
+                  <span className="font-medium">Warning!</span> Please enter the
+                  Phone numer.
+                </p>
+              )}
             </div>
             <div className="px-3 my-2">
               <input
@@ -180,9 +271,17 @@ const FormSpeaker = () => {
                 className="w-full  bg-grayform text-white rounded py-4 px-4 mb-3 border-none font-medium font-DMSansmedium"
                 name="email"
                 placeholder="Email"
-                onChange={(e) => handleInputChange(e)}
-                required
+                onChange={(e) => {
+                  setvalidaiton({ ...isValid, email: true });
+                  handleInputChange(e);
+                }}
               />
+              {!isValid.email && (
+                <p className="mt-2 text-sm text-red-600 dark:text-red-500 text-left">
+                  <span className="font-medium">Warning!</span> Please enter the
+                  email.
+                </p>
+              )}
             </div>
           </div>
         </div>
@@ -199,9 +298,11 @@ const FormSpeaker = () => {
                 type="radio"
                 name="numAttendees"
                 className="hidden mr-4"
-                value={'0-50'}
-                onChange={(e) => handleInputChange(e)}
-                required
+                value={"0-50"}
+                onChange={(e) => {
+                  setvalidaiton({ ...isValid, numAttendees: true });
+                  handleInputChange(e);
+                }}
               />
               <label
                 htmlFor="radio1"
@@ -218,9 +319,11 @@ const FormSpeaker = () => {
                 type="radio"
                 name="numAttendees"
                 className="hidden mr-4"
-                value={'50-100'}
-                onChange={(e) => handleInputChange(e)}
-                required
+                value={"50-100"}
+                onChange={(e) => {
+                  setvalidaiton({ ...isValid, numAttendees: true });
+                  handleInputChange(e);
+                }}
               />
               <label
                 htmlFor="radio2"
@@ -237,8 +340,11 @@ const FormSpeaker = () => {
                 type="radio"
                 name="numAttendees"
                 className="hidden mr-4"
-                value={'100-200'}
-                onChange={(e) => handleInputChange(e)}
+                value={"100-200"}
+                onChange={(e) => {
+                  setvalidaiton({ ...isValid, numAttendees: true });
+                  handleInputChange(e);
+                }}
               />
               <label
                 htmlFor="radio3"
@@ -255,8 +361,11 @@ const FormSpeaker = () => {
                 type="radio"
                 name="numAttendees"
                 className="hidden mr-4"
-                value={'200+'}
-                onChange={(e) => handleInputChange(e)}
+                value={"200+"}
+                onChange={(e) => {
+                  setvalidaiton({ ...isValid, numAttendees: true });
+                  handleInputChange(e);
+                }}
               />
               <label
                 htmlFor="radio4"
@@ -268,7 +377,12 @@ const FormSpeaker = () => {
             </div>
           </div>
         </div>
-
+        {!isValid.numAttendees && (
+          <p className="mt-2 text-sm text-red-600 dark:text-red-500 text-center">
+            <span className="font-medium">Warning!</span> Please enter the
+            number of attendees for the event.
+          </p>
+        )}
         <div className="attend-button sm:w-full text-center mb-18 md:mb-20 pb-8 md:pb-20 sm:pb-10 mt-10 sm:mb-10">
           <button className="flex items-center mx-auto bg-green text-white py-4 px-14 hover:bg-darkgreen  border-none rounded-lg font-medium font-DMSansmedium">
             {" "}

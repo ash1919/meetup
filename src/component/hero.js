@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Hero() {
   
@@ -14,12 +15,12 @@ export default function Hero() {
           job.
         </p>
         <div className="flex items-center justify-around space-x-8 lg:w-1/2 xl-w-1/3 md:w-1/2 sm:w-55 mx-auto pt-2">
-          <a href="#" className="sm:pr-2 text-ligreen hover:text-secondary">
+          <Link to="/speaker" className="sm:pr-2 text-ligreen hover:text-secondary">
             Request speaker
-          </a>
-          <a href="#" className="text-ligreen hover:text-secondary">
+          </Link>
+          <Link to="/sponsor" className="text-ligreen hover:text-secondary">
             Request sponsorship
-          </a>
+          </Link>
         </div>
         <div className="w-full pt-4">
             <div className="flex justify-center w-full bg-cover bg-center">

@@ -1,82 +1,75 @@
 import React, { useEffect, useState } from "react";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-import 'flowbite';
-
-
+import "flowbite";
 
 const FormSponsor = () => {
-
   const userDetailsInit = {
     organizationName: "",
     address: "",
     date: "",
+    countryCode: "",
     phoneNumber: "",
     userName: "",
     email: "",
   };
-  const[isValid,setvalidaiton]=useState(
-    {
-      organizationName: true,
-      address: false,
-      date: false,
-      phoneNumber: false,
-      userName: false,
-      email: false,
-    }
-  );
+  const [number, setNumber] = useState();
+  const [isValid, setvalidaiton] = useState({
+    organizationName: true,
+    address: true,
+    date: true,
+    phoneNumber: true,
+    userName: true,
+    email: true,
+  });
   const [userDetails, setUserDetails] = useState(userDetailsInit);
   const handleInputChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
     setUserDetails({ ...userDetails, [name]: value });
-    
   };
-  const setPhoneNumber=(value)=>{
-    setUserDetails({ ...userDetails, "phoneNumber": value }); 
-  }
+
+  const setPhoneNumber = (value, data) => {
+    setUserDetails({ ...userDetails, countryCode: data.dialCode });
+    setUserDetails({
+      ...userDetails,
+      phoneNumber: value.slice(data.dialCode.length),
+    });
+    setvalidaiton({ ...isValid, phoneNumber: true });
+    setNumber(value);
+  };
+  console.log(userDetails["phoneNumber"]);
+
+  const validateForm = () => {
+    if (!userDetails.organizationName.replace(/\s/g, "").length) {
+      return setvalidaiton({ ...isValid, organizationName: false });
+    }
+    if (!userDetails.address.replace(/\s/g, "").length) {
+      return setvalidaiton({ ...isValid, address: false });
+    }
+    if (!userDetails.date.replace(/\s/g, "").length) {
+      return setvalidaiton({ ...isValid, date: false });
+    }
+    if (!userDetails.userName.replace(/\s/g, "").length) {
+      return setvalidaiton({ ...isValid, userName: false });
+    }
+    if (!userDetails.phoneNumber.replace(/\s/g, "").length) {
+      return setvalidaiton({ ...isValid, phoneNumber: false });
+    }
+    if (!userDetails.email.replace(/\s/g, "").length) {
+      return setvalidaiton({ ...isValid, email: false });
+    }
+  };
 
   const handleFormSubmit = (e) => {
-    
-  };
-  useEffect(()=>{
+    e.preventDefault();
     validateForm();
-  },[userDetails])
-
- const validateForm=()=>{
-    if(userDetails.organizationName == ''&& !userDetails.organizationName.replace(/\s/g, "").length ){
-      setvalidaiton({...isValid,organizationName:false});
-    }
-    if(userDetails.address !== '' && !userDetails.address.replace(/\s/g, "").length){
-      setvalidaiton({...isValid,address:true});
-    }
-    if(userDetails.date !== '' && !userDetails.date.replace(/\s/g, "").length){
-      setvalidaiton({...isValid,date:true});
-    }
-    if(userDetails.phoneNumber !== '' && !userDetails.phoneNumber.replace(/\s/g, "").length){
-      setvalidaiton({...isValid,phoneNumber:true});
-    }
-    if(userDetails.userName !== '' && !userDetails.userName.replace(/\s/g, "").length){
-      setvalidaiton({...isValid,userName:true});
-    }
-    if(userDetails.email !== '' && !userDetails.email.replace(/\s/g, "").length){
-      setvalidaiton({...isValid,email:true});
-    }
-    
-
-    
-  //   if (userDetails.replace(/\s/g, "").length === 0) {
-  //   return setFilterSpeaker(speakerDetails);
-  // } 
-  // else {
-  //   return setFilterSpeaker("");
-  // }
- }
- console.log(isValid);
-
+  };
+  console.log(userDetails);
+  console.log(isValid);
   return (
     <div className="all-form mx-auto w-[90%] md:w-[80%] lg:w-[70%] shadow-xl mb-10">
-      <form onSubmit={(e) => handleFormSubmit(e)}>
+      <form onSubmit={(e) => handleFormSubmit(e)} autoComplete="off">
         <div className="sm:flex both-side-form colorWhite">
           <div className="left-form w-[100%] md:w-[50%]">
             <div className="px-3 my-5 text-center">
@@ -92,10 +85,17 @@ const FormSponsor = () => {
                 className="w-full bg-grayform text-white rounded py-4 px-4 border-none mt-10 font-medium font-DMSansmedium"
                 name="organizationName"
                 placeholder="Org / College name"
-                onChange={(e) => handleInputChange(e)}
-                required
+                onChange={(e) => {
+                  setvalidaiton({ ...isValid, organizationName: true });
+                  handleInputChange(e);
+                }}
               />
-              {isValid.organizationName===true?( <p className="mt-2 text-sm text-red-600 dark:text-red-500 text-left"><span className="font-medium">Oh, snapp!</span> Some error message.</p>):null}
+              {!isValid.organizationName && (
+                <p className="mt-2 text-sm text-red-600 dark:text-red-500 text-left">
+                  <span className="font-medium">Warning!</span> Please enter the
+                  organization/college name.
+                </p>
+              )}
             </div>
             <div className="px-3 my-5">
               <input
@@ -103,9 +103,17 @@ const FormSponsor = () => {
                 className="w-full bg-grayform text-white rounded py-4 px-4 border-none font-medium font-DMSansmedium"
                 name="address"
                 placeholder="Address"
-                onChange={(e) => handleInputChange(e)}
-                required
+                onChange={(e) => {
+                  setvalidaiton({ ...isValid, address: true });
+                  handleInputChange(e);
+                }}
               />
+              {!isValid.address && (
+                <p className="mt-2 text-sm text-red-600 dark:text-red-500 text-left">
+                  <span className="font-medium">Warning!</span> Please enter the
+                  Address of the venue.
+                </p>
+              )}
             </div>
             <div className="xl:flex">
               <div className="px-3 w-[100%]">
@@ -114,9 +122,17 @@ const FormSponsor = () => {
                   className="w-[100%] bg-grayform text-white rounded py-4 px-4 mb-3 border-none font-medium font-DMSansmedium"
                   name="date"
                   placeholder="date"
-                  onChange={(e) => handleInputChange(e)}
-                  required
+                  onChange={(e) => {
+                    setvalidaiton({ ...isValid, date: true });
+                    handleInputChange(e);
+                  }}
                 />
+                {!isValid.date && (
+                  <p className="mt-2 text-sm text-red-600 dark:text-red-500 text-left">
+                    <span className="font-medium">Warning!</span> Please select
+                    the date of event.
+                  </p>
+                )}
               </div>
             </div>
           </div>
@@ -134,9 +150,17 @@ const FormSponsor = () => {
                 className="w-full bg-grayform text-white rounded py-4 px-4 border-none mt-10 font-medium font-DMSansmedium"
                 name="userName"
                 placeholder="Name"
-                onChange={(e) => handleInputChange(e)}
-                required
+                onChange={(e) => {
+                  setvalidaiton({ ...isValid, userName: true });
+                  handleInputChange(e);
+                }}
               />
+              {!isValid.userName && (
+                <p className="mt-2 text-sm text-red-600 dark:text-red-500 text-left">
+                  <span className="font-medium">Warning!</span> Please Enter the
+                  user name.
+                </p>
+              )}
             </div>
             <div className="px-3 my-2">
               <PhoneInput
@@ -145,10 +169,10 @@ const FormSponsor = () => {
                 countryCodeEditable={false}
                 inputProps={{
                   name: "phoneNumber",
-                  required:true
+                  required: true,
                 }}
-                value={userDetails["phoneNumber"]}
-                onChange={(value) => setPhoneNumber(value)}
+                value={number}
+                onChange={setPhoneNumber}
                 containerStyle={{
                   fontFamily: "Open Sans",
                   fontSize: "0.875rem",
@@ -170,6 +194,12 @@ const FormSponsor = () => {
                   background: "#21201f",
                 }}
               />
+              {!isValid.phoneNumber && (
+                <p className="mt-2 text-sm text-red-600 dark:text-red-500 text-left">
+                  <span className="font-medium">Warning!</span> Please Enter the
+                  phone number.
+                </p>
+              )}
             </div>
             <div className="px-3 my-2">
               <input
@@ -177,9 +207,17 @@ const FormSponsor = () => {
                 className="w-full  bg-grayform text-white rounded py-4 px-4 mb-3 border-none font-medium font-DMSansmedium"
                 name="email"
                 placeholder="Email"
-                onChange={(e) => handleInputChange(e)}
-                required
+                onChange={(e) => {
+                  setvalidaiton({ ...isValid, email: true });
+                  handleInputChange(e);
+                }}
               />
+              {!isValid.email && (
+                <p className="mt-2 text-sm text-red-600 dark:text-red-500 text-left">
+                  <span className="font-medium">Warning!</span> Please Enter the
+                  email.
+                </p>
+              )}
             </div>
           </div>
         </div>
