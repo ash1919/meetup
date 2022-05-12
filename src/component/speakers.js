@@ -1,15 +1,33 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import SearchBar from "./searchBar";
-import { speakerDetails } from "./const/speakerData";
+import { url } from "./const/apiurl";
+import Axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function ListOfSpeakers() {
-  const [filterSpeaker, setFilterSpeaker] = useState(speakerDetails);
- 
+  const [filterSpeaker, setFilterSpeaker] = useState(null);
+  const [speakerDetails, setSpeakerdetails] = useState(null);
+
+  const getSpeakerDetails = async () => {
+    const path = url.endPoint + "/speakers/?skip=0&limit=100";
+
+    const response = await Axios.get(path);
+    try {
+      if (response.status === 200) {
+        setFilterSpeaker(response.data);
+        setSpeakerdetails(response.data);
+      }
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
+  console.log(filterSpeaker, speakerDetails);
   const filter = (value) => {
     if (value.replace(/\s/g, "").length) {
       const filterData = speakerDetails.filter((speaker) => {
-        return speaker.speakerName.toLowerCase() === value.toLowerCase();
+        return speaker.name.toLowerCase() === value.toLowerCase();
       });
       setFilterSpeaker(filterData);
     } else if (value.replace(/\s/g, "").length === 0) {
@@ -18,14 +36,18 @@ export default function ListOfSpeakers() {
       return setFilterSpeaker("");
     }
   };
+ 
+  useEffect(() => {
+    getSpeakerDetails();
+  }, []);
+ 
   return (
+    <>
     <div className="sm:container container">
       <h2 className="text-4xl md:text-5xl font-bold font-opensans text-center text-white mt-24">
         List of Speakers
       </h2>
-
       <SearchBar filter={filter} />
-
       {filterSpeaker.length > 0 ? (
         <div className="flex-col pt-20 gap-3 items-center justify-center mt-10 w-full">
           <div className="flex flex-col lg:flex-row items-center justify-center flex-wrap gap-16 lg:gap-16 xs:gap-8 mb-6">
@@ -102,5 +124,17 @@ export default function ListOfSpeakers() {
         </div>
       )}
     </div>
+    <ToastContainer
+    position="top-center"
+    autoClose={5000}
+    hideProgressBar={false}
+    newestOnTop={false}
+    closeOnClick
+    rtl={false}
+    pauseOnFocusLoss
+    draggable
+    pauseOnHover
+    />
+    </>
   );
 }
