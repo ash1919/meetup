@@ -11,7 +11,7 @@ const FormSpeaker = () => {
     address: "",
     modeOfEvent: "",
     date: "",
-    countryCode: "",
+    isd: "",
     phoneNumber: "",
     userName: "",
     numAttendees: "",
@@ -37,9 +37,9 @@ const FormSpeaker = () => {
   };
 
   const setPhoneNumber = (value, data) => {
-    setUserDetails({ ...userDetails, countryCode: data.dialCode });
     setUserDetails({
       ...userDetails,
+      isd: data.dialCode,
       phoneNumber: value.slice(data.dialCode.length),
     });
     setvalidaiton({ ...isValid, phoneNumber: true });
@@ -79,8 +79,7 @@ const FormSpeaker = () => {
     e.preventDefault();
     validateForm();
   };
-  console.log(isValid);
-  console.log(userDetails);
+  
   return (
     <div className="all-form mx-auto w-[90%] md:w-[80%] lg:w-[70%] shadow-xl mb-10">
       <form onSubmit={(e) => handleFormSubmit(e)} autoComplete="off">

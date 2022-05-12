@@ -13,7 +13,7 @@ export default function SearchBar({filter}){
       clearTimeout(debounceTimeout);
     }
     const timeout = setTimeout(() => {
-      console.log(value)
+      
        filter(value);
     }, 500);
     setDebounceTimeout(timeout);

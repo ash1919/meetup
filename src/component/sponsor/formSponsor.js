@@ -8,12 +8,12 @@ const FormSponsor = () => {
     organizationName: "",
     address: "",
     date: "",
-    countryCode: "",
+    isd: "",
     phoneNumber: "",
     userName: "",
     email: "",
   };
-  const [number, setNumber] = useState();
+  
   const [isValid, setvalidaiton] = useState({
     organizationName: true,
     address: true,
@@ -22,22 +22,28 @@ const FormSponsor = () => {
     userName: true,
     email: true,
   });
+  const [number, setNumber] = useState();
   const [userDetails, setUserDetails] = useState(userDetailsInit);
+
   const handleInputChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
     setUserDetails({ ...userDetails, [name]: value });
   };
 
-  const setPhoneNumber = (value, data) => {
-    setUserDetails({ ...userDetails, countryCode: data.dialCode });
+  const setPhoneNumber = (value, data, event, formattedValue) => {
+    console.log(data.dialCode)
+    setUserDetails({ ...userDetails,isd:data.dialCode});
+
     setUserDetails({
       ...userDetails,
+      isd: data.dialCode,
       phoneNumber: value.slice(data.dialCode.length),
     });
     setvalidaiton({ ...isValid, phoneNumber: true });
     setNumber(value);
   };
+
   console.log(userDetails["phoneNumber"]);
 
   const validateForm = () => {
@@ -65,8 +71,7 @@ const FormSponsor = () => {
     e.preventDefault();
     validateForm();
   };
-  console.log(userDetails);
-  console.log(isValid);
+ 
   return (
     <div className="all-form mx-auto w-[90%] md:w-[80%] lg:w-[70%] shadow-xl mb-10">
       <form onSubmit={(e) => handleFormSubmit(e)} autoComplete="off">
@@ -180,7 +185,7 @@ const FormSponsor = () => {
                 }}
                 inputStyle={{
                   background: "transparent",
-                  border: "none",
+                  border: "transparent",
                   color: "white",
                 }}
                 buttonStyle={{
@@ -192,6 +197,10 @@ const FormSponsor = () => {
                 }}
                 dropdownStyle={{
                   background: "#21201f",
+                }}
+                searchStyle={{
+                  border:"transparent",
+                  outline:"none"
                 }}
               />
               {!isValid.phoneNumber && (
