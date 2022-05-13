@@ -128,7 +128,7 @@ const FormSpeaker = () => {
               </option>
               {speakerDetails.map((items) => {
                 return (
-                  <option className="opt font-DMSansmedium" key={items.id}>
+                  <option value={items.id} className="opt font-DMSansmedium" key={items.id}>
                     {" "}
                     {items.name}{" "}
                   </option>
