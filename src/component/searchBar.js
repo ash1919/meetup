@@ -6,9 +6,7 @@ export default function SearchBar({filter}){
   const [debounceTimeout, setDebounceTimeout] = useState(null);
 
   const debounceSearch = (event, debounceTimeout) => {
-    const value = event.target.value;
-    // filter(value);
-    console.log("hey speaker die")
+    const value = event.target.value;  
     if (debounceTimeout) {
       clearTimeout(debounceTimeout);
     }
