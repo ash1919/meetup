@@ -32,7 +32,7 @@ const FormSpeaker = () => {
     numberOfAttendees: "",
   };
   const [isValid, setvalidaiton] = useState({
-    speakerId: true,
+    speakerId:true,
     organizationName: true,
     address: true,
     mode: true,
@@ -63,32 +63,42 @@ const FormSpeaker = () => {
 
   const validateForm = () => {
     if (!userDetails.speakerId.replace(/\s/g, "").length) {
-      return setvalidaiton({ ...isValid, speakerId: false });
+       setvalidaiton({ ...isValid, speakerId: false });
+       return false;
     }
     if (!userDetails.organizationName.replace(/\s/g, "").length) {
-      return setvalidaiton({ ...isValid, organizationName: false });
+       setvalidaiton({ ...isValid, organizationName: false });
+       return false;
     }
     if (!userDetails.address.replace(/\s/g, "").length) {
-      return setvalidaiton({ ...isValid, address: false });
+       setvalidaiton({ ...isValid, address: false });
+       return false;
     }
     if (!userDetails.mode.replace(/\s/g, "").length) {
-      return setvalidaiton({ ...isValid, mode: false });
+       setvalidaiton({ ...isValid, mode: false });
+       return false;
     }
     if (!userDetails.date.replace(/\s/g, "").length) {
-      return setvalidaiton({ ...isValid, date: false });
+       setvalidaiton({ ...isValid, date: false });
+       return false;
     }
     if (!userDetails.name.replace(/\s/g, "").length) {
-      return setvalidaiton({ ...isValid, name: false });
+       setvalidaiton({ ...isValid, name: false });
+       return false;
     }
     if (!userDetails.phoneNumber.replace(/\s/g, "").length) {
-      return setvalidaiton({ ...isValid, phoneNumber: false });
+       setvalidaiton({ ...isValid, phoneNumber: false });
+       return false;
     }
     if (!userDetails.email.replace(/\s/g, "").length) {
-      return setvalidaiton({ ...isValid, email: false });
+       setvalidaiton({ ...isValid, email: false });
+       return false;
     }
     if (!userDetails.numberOfAttendees.replace(/\s/g, "").length) {
-      return setvalidaiton({ ...isValid, numberOfAttendees: false });
+      setvalidaiton({ ...isValid, numberOfAttendees: false });
+      return false;
     }
+    return true;
   };
 
   const getSpeakerDetails = async () => {
@@ -105,11 +115,14 @@ const FormSpeaker = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+
     const recaptchaValue = await handleReCaptchaVerify();
     console.log(recaptchaValue);
+    return
     const urlPath = url.endPoint + "/speakers/request";
-    validateForm();
-    console.log(userDetails.mode)
+    const val = validateForm();
+    // console.log(val)
+    // console.log(userDetails.mode)
     const formData = {
       organizationName: userDetails.organizationName,
       address: userDetails.address,
@@ -124,8 +137,8 @@ const FormSpeaker = () => {
       speakerId: userDetails.speakerId,
       numberOfAttendees: userDetails.numberOfAttendees,
     };
-    console.log(formData)
-    if(isValid){
+    console.log(formData,val)
+    if(val){
       try {
         const response = await Axios.post(urlPath,{
           ...formData,
