@@ -7,8 +7,18 @@ import { url } from "../const/apiurl";
 import Axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 const FormSpeaker = () => {
+  const { executeRecaptcha } = useGoogleReCaptcha();
+
+  const handleReCaptchaVerify = async () => {
+    if (!executeRecaptcha) return false;
+
+    const token = await executeRecaptcha("SpeakerForm");
+    if (token) return token;
+    return false;
+  };
   const userDetailsInit = {
     speakerId: "",
     organizationName: "",
@@ -93,27 +103,44 @@ const FormSpeaker = () => {
     }
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    const urlPath=url.endPoint+'/speakers/request';
+    const recaptchaValue = await handleReCaptchaVerify();
+    console.log(recaptchaValue);
+    const urlPath = url.endPoint + "/speakers/request";
     validateForm();
-    const formData={
-      "organizationName":userDetails.organizationName,
-      "address":userDetails.address,
-      "mode":userDetails.mode,
-      "date":userDetails.date,
-      "pointOfContact":{
-          "name":userDetails.name,
-          "email":userDetails.email,
-          "isdCode":userDetails.isdCode,
-          "phoneNumber":userDetails.phoneNumber,
+    console.log(userDetails.mode)
+    const formData = {
+      organizationName: userDetails.organizationName,
+      address: userDetails.address,
+      mode: userDetails.mode.toLowerCase(),
+      date: userDetails.date,
+      pointOfContact: {
+        name: userDetails.name,
+        email: userDetails.email,
+        isdCode: userDetails.isdCode,
+        phoneNumber: userDetails.phoneNumber,
       },
-      "speakerId":userDetails.speakerId,
-      "numberOfAttendees":userDetails.numberOfAttendees,
-  }
-
-      
-    
+      speakerId: userDetails.speakerId,
+      numberOfAttendees: userDetails.numberOfAttendees,
+    };
+    console.log(formData)
+    if(isValid){
+      try {
+        const response = await Axios.post(urlPath,{
+          ...formData,
+          'g-recaptcha-response': recaptchaValue
+        })
+        if(response.status===201){
+          toast.success("Speaker form submitted Successfully");
+          setUserDetails([]);
+        }
+       
+        console.log(userDetails);
+      } catch (error) {
+        
+      }
+    }   
   };
 
   useEffect(() => {
@@ -437,8 +464,9 @@ const FormSpeaker = () => {
         </form>
       </div>
       <ToastContainer
-        position="top-center"
-        autoClose={5000}
+        theme="dark"
+        position="top-right"
+        autoClose={3000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
