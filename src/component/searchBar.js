@@ -8,7 +8,7 @@ export default function SearchBar({filter}){
   const debounceSearch = (event, debounceTimeout) => {
     const value = event.target.value;
     // filter(value);
-    try{
+    console.log("hey speaker die")
     if (debounceTimeout) {
       clearTimeout(debounceTimeout);
     }
@@ -16,11 +16,9 @@ export default function SearchBar({filter}){
       
        filter(value);
     }, 500);
-    setDebounceTimeout(timeout);
-  }catch(err){
-    console.log(err);  
-  }
+    setDebounceTimeout(timeout); 
 };
+
   return (
 <section>
         <form className=" container pt-10 text-white relative bg-no-repeat">

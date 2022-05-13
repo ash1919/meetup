@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import PhoneInput from "react-phone-input-2";
 import { speakerDetails } from "../const/speakerData";
 import "react-phone-input-2/lib/style.css";
 import "flowbite";
+import { url } from "../const/apiurl";
+import Axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const FormSpeaker = () => {
   const userDetailsInit = {
@@ -28,6 +32,7 @@ const FormSpeaker = () => {
     email: true,
     numAttendees: true,
   });
+  const [speakerDetails,setSpeakerdetails]=useState([]);
   const [number, setNumber] = useState();
   const [userDetails, setUserDetails] = useState(userDetailsInit);
   const handleInputChange = (e) => {
@@ -75,12 +80,36 @@ const FormSpeaker = () => {
       return setvalidaiton({ ...isValid, numAttendees: false });
     }
   };
+
+  const getSpeakerDetails = async () => {
+    const path = url.endPoint + "/speakers/?skip=0&limit=100";
+
+   
+    try {
+      const response = await Axios.get(path);
+      if (response.status === 200) {
+        setSpeakerdetails(response.data.speakers);
+      }
+     
+    } catch (err) {
+      toast.error(err.message);
+      }
+  };
+
+
   const handleFormSubmit = (e) => {
     e.preventDefault();
     validateForm();
   };
+
+  useEffect(() => {
+    
+  getSpeakerDetails();
+  }, [])
+  
   
   return (
+    <>
     <div className="all-form mx-auto w-[90%] md:w-[80%] lg:w-[70%] shadow-xl mb-10">
       <form onSubmit={(e) => handleFormSubmit(e)} autoComplete="off">
         <div className="select-form mt-14 mb-4 px-3 pb-6 md:pb-12">
@@ -101,7 +130,7 @@ const FormSpeaker = () => {
                 return (
                   <option className="opt font-DMSansmedium" key={items.id}>
                     {" "}
-                    {items.speakerName}{" "}
+                    {items.name}{" "}
                   </option>
                 );
               })}
@@ -390,6 +419,18 @@ const FormSpeaker = () => {
         </div>
       </form>
     </div>
+    <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+    </>
   );
 };
 
