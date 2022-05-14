@@ -173,7 +173,7 @@ input:-webkit-autofill:focus{
 }
 .grecaptcha-badge {
    opacity:0 !important;
-   visibility: hidden;
+   /* visibility: hidden ; */
   }
 /* **** */
 

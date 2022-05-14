@@ -32,7 +32,7 @@ const FormSpeaker = () => {
     numberOfAttendees: "",
   };
   const [isValid, setvalidaiton] = useState({
-    speakerId:true,
+    speakerId: true,
     organizationName: true,
     address: true,
     mode: true,
@@ -60,39 +60,44 @@ const FormSpeaker = () => {
     setvalidaiton({ ...isValid, phoneNumber: true });
     setNumber(value);
   };
+  // const section = () => {
+  //   console.log('hey you are called')
+  //   document.querySelector("#selectSpeaker").scrollIntoView({ behavior: "smooth", block: "start" });
+  // };
 
   const validateForm = () => {
     if (!userDetails.speakerId.replace(/\s/g, "").length) {
-       setvalidaiton({ ...isValid, speakerId: false });
-       return false;
+      setvalidaiton({ ...isValid, speakerId: false });
+
+      return false;
     }
     if (!userDetails.organizationName.replace(/\s/g, "").length) {
-       setvalidaiton({ ...isValid, organizationName: false });
-       return false;
+      setvalidaiton({ ...isValid, organizationName: false });
+      return false;
     }
     if (!userDetails.address.replace(/\s/g, "").length) {
-       setvalidaiton({ ...isValid, address: false });
-       return false;
+      setvalidaiton({ ...isValid, address: false });
+      return false;
     }
     if (!userDetails.mode.replace(/\s/g, "").length) {
-       setvalidaiton({ ...isValid, mode: false });
-       return false;
+      setvalidaiton({ ...isValid, mode: false });
+      return false;
     }
-    if (!userDetails.date.replace(/\s/g, "").length) {
-       setvalidaiton({ ...isValid, date: false });
-       return false;
+    if (!userDetails.date.toString().replace(/\s/g, "").length) {
+      setvalidaiton({ ...isValid, date: false });
+      return false;
     }
     if (!userDetails.name.replace(/\s/g, "").length) {
-       setvalidaiton({ ...isValid, name: false });
-       return false;
+      setvalidaiton({ ...isValid, name: false });
+      return false;
     }
     if (!userDetails.phoneNumber.replace(/\s/g, "").length) {
-       setvalidaiton({ ...isValid, phoneNumber: false });
-       return false;
+      setvalidaiton({ ...isValid, phoneNumber: false });
+      return false;
     }
     if (!userDetails.email.replace(/\s/g, "").length) {
-       setvalidaiton({ ...isValid, email: false });
-       return false;
+      setvalidaiton({ ...isValid, email: false });
+      return false;
     }
     if (!userDetails.numberOfAttendees.replace(/\s/g, "").length) {
       setvalidaiton({ ...isValid, numberOfAttendees: false });
@@ -117,17 +122,16 @@ const FormSpeaker = () => {
     e.preventDefault();
 
     const recaptchaValue = await handleReCaptchaVerify();
-    console.log(recaptchaValue);
-    return
+
     const urlPath = url.endPoint + "/speakers/request";
     const val = validateForm();
-    // console.log(val)
-    // console.log(userDetails.mode)
+    userDetails.date = new Date();
+
     const formData = {
       organizationName: userDetails.organizationName,
       address: userDetails.address,
       mode: userDetails.mode.toLowerCase(),
-      date: userDetails.date,
+      date: userDetails.date.toISOString(),
       pointOfContact: {
         name: userDetails.name,
         email: userDetails.email,
@@ -137,34 +141,38 @@ const FormSpeaker = () => {
       speakerId: userDetails.speakerId,
       numberOfAttendees: userDetails.numberOfAttendees,
     };
-    console.log(formData,val)
-    if(val){
+    if (val) {
       try {
-        const response = await Axios.post(urlPath,{
+        const response = await Axios.post(urlPath, {
           ...formData,
-          'g-recaptcha-response': recaptchaValue
-        })
-        if(response.status===201){
+          "g-recaptcha-response": recaptchaValue,
+        });
+        if (response.status === 201) {
           toast.success("Speaker form submitted Successfully");
-          setUserDetails([]);
+          setUserDetails(userDetailsInit);
+          setNumber(userDetails.isdCode);
         }
-       
         console.log(userDetails);
       } catch (error) {
-        
+        toast.error(error.message);
       }
-    }   
+    }
   };
 
   useEffect(() => {
     getSpeakerDetails();
+    window.scrollTo(0, 0);
   }, []);
 
-  // console.log(userDetails);
+  console.log(userDetails);
   return (
     <>
       <div className="all-form mx-auto w-[90%] md:w-[80%] lg:w-[70%] shadow-xl mb-10">
-        <form onSubmit={(e) => handleFormSubmit(e)} autoComplete="off">
+        <form
+          id="form2"
+          onSubmit={(e) => handleFormSubmit(e)}
+          autoComplete="off"
+        >
           <div className="select-form mt-14 mb-4 px-3 pb-6 md:pb-12">
             <div className="select-box relative flex w-[100%] sm:w-[80%] md:w-[75%] lg:w-[60%] mx-auto text-left flex-col ">
               <select
@@ -175,7 +183,7 @@ const FormSpeaker = () => {
                   handleInputChange(e);
                 }}
               >
-                <option className="opt font-DMSansmedium">
+                <option className="opt font-DMSansmedium" value="">
                   {" "}
                   Speaker requesting for{" "}
                 </option>
@@ -184,10 +192,10 @@ const FormSpeaker = () => {
                     <option
                       value={items.id}
                       className="opt font-DMSansmedium"
+                      id="selectSpeaker"
                       key={items.id}
                     >
-                      {" "}
-                      {items.name}{" "}
+                      {items.name}
                     </option>
                   );
                 })}
@@ -215,6 +223,7 @@ const FormSpeaker = () => {
                   className="w-full bg-grayform text-white rounded py-4 px-4 border-none mt-10 font-medium font-DMSansmedium"
                   name="organizationName"
                   placeholder="Org / College name"
+                  value={userDetails.organizationName}
                   onChange={(e) => {
                     setvalidaiton({ ...isValid, organizationName: true });
                     handleInputChange(e);
@@ -233,6 +242,7 @@ const FormSpeaker = () => {
                   className="w-full bg-grayform text-white rounded py-4 px-4 border-none font-medium font-DMSansmedium"
                   name="address"
                   placeholder="Address"
+                  value={userDetails.address}
                   onChange={(e) => {
                     setvalidaiton({ ...isValid, address: true });
                     handleInputChange(e);
@@ -250,6 +260,7 @@ const FormSpeaker = () => {
                   <select
                     className="selectOption minimal py-4 w-[100%] xl:w-[100%] bg-grayform text-white px-4 mb-3 rounded border-none font-medium font-DMSansmedium"
                     name="mode"
+                    value={userDetails.mode}
                     onChange={(e) => {
                       setvalidaiton({ ...isValid, mode: true });
                       handleInputChange(e);
@@ -274,6 +285,7 @@ const FormSpeaker = () => {
                     type="date"
                     className="w-[100%] xl:w-[98%] bg-grayform text-white rounded py-4 px-4 mb-3 border-none font-medium font-DMSansmedium"
                     name="date"
+                    value={userDetails.date}
                     onChange={(e) => {
                       setvalidaiton({ ...isValid, date: true });
                       handleInputChange(e);
@@ -302,6 +314,7 @@ const FormSpeaker = () => {
                   className="w-full bg-grayform text-white rounded py-4 px-4 border-none mt-10 font-medium font-DMSansmedium"
                   name="name"
                   placeholder="Name"
+                  value={userDetails.name}
                   onChange={(e) => {
                     setvalidaiton({ ...isValid, name: true });
                     handleInputChange(e);
@@ -356,6 +369,7 @@ const FormSpeaker = () => {
                   className="w-full  bg-grayform text-white rounded py-4 px-4 mb-3 border-none font-medium font-DMSansmedium"
                   name="email"
                   placeholder="Email"
+                  value={userDetails.email}
                   onChange={(e) => {
                     setvalidaiton({ ...isValid, email: true });
                     handleInputChange(e);

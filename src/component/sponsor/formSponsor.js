@@ -2,13 +2,28 @@ import React, { useEffect, useState } from "react";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import "flowbite";
-
+import Axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import { url } from "../const/apiurl";
 const FormSponsor = () => {
+
+  const { executeRecaptcha } = useGoogleReCaptcha();
+
+  const handleReCaptchaVerify = async () => {
+    if (!executeRecaptcha) return false;
+
+    const token = await executeRecaptcha("SpeakerForm");
+    if (token) return token;
+    return false;
+  };
+
   const userDetailsInit = {
     organizationName: "",
     address: "",
     date: "",
-    isd: "",
+    isdCode: "",
     phoneNumber: "",
     userName: "",
     email: "",
@@ -32,47 +47,86 @@ const FormSponsor = () => {
   };
 
   const setPhoneNumber = (value, data, event, formattedValue) => {
-    console.log(data.dialCode)
-    setUserDetails({ ...userDetails,isd:data.dialCode});
-
     setUserDetails({
       ...userDetails,
-      isd: data.dialCode,
+      isdCode: data.dialCode,
       phoneNumber: value.slice(data.dialCode.length),
     });
     setvalidaiton({ ...isValid, phoneNumber: true });
     setNumber(value);
   };
 
-  console.log(userDetails["phoneNumber"]);
 
   const validateForm = () => {
     if (!userDetails.organizationName.replace(/\s/g, "").length) {
-      return setvalidaiton({ ...isValid, organizationName: false });
+       setvalidaiton({ ...isValid, organizationName: false });
+       return false;
     }
     if (!userDetails.address.replace(/\s/g, "").length) {
-      return setvalidaiton({ ...isValid, address: false });
+       setvalidaiton({ ...isValid, address: false });
+       return false;
     }
-    if (!userDetails.date.replace(/\s/g, "").length) {
-      return setvalidaiton({ ...isValid, date: false });
+    if (!userDetails.date.toString().replace(/\s/g, "").length) {
+       setvalidaiton({ ...isValid, date: false });
+       return false;
     }
     if (!userDetails.userName.replace(/\s/g, "").length) {
-      return setvalidaiton({ ...isValid, userName: false });
+       setvalidaiton({ ...isValid, userName: false });
+       return false;
     }
     if (!userDetails.phoneNumber.replace(/\s/g, "").length) {
-      return setvalidaiton({ ...isValid, phoneNumber: false });
+       setvalidaiton({ ...isValid, phoneNumber: false });
+       return false;
     }
     if (!userDetails.email.replace(/\s/g, "").length) {
-      return setvalidaiton({ ...isValid, email: false });
+       setvalidaiton({ ...isValid, email: false });
+       return false;
     }
+    return true;
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit =async (e) => {
     e.preventDefault();
-    validateForm();
-  };
+    const recaptchaValue = await handleReCaptchaVerify();
+    console.log('recaptcha:',recaptchaValue);
+   const val= validateForm();
+  const urlPath=`${url.endPoint}/sponsor`
+  userDetails.date=new Date();
+    const formData = {
+      organizationName: userDetails.organizationName,
+      address: userDetails.address,
+      date: userDetails.date.toISOString(),
+      pointOfContact: {
+        name: userDetails.userName,
+        email: userDetails.email,
+        isdCode: userDetails.isdCode,
+        phoneNumber: userDetails.phoneNumber,
+      },
+    };
+   
+    if(val){
+      try {
+        const response = await Axios.post(urlPath,{
+          ...formData,
+          'g-recaptcha-response': recaptchaValue
+        })
+        if(response.status===201){
+          toast.success("Speaker form submitted Successfully");
+          setUserDetails(userDetailsInit); 
+          setNumber(userDetails.isdCode);
+        }
+        console.log(userDetails);
+      } catch (error) {
+        toast.error(error.message);
+      }
+    } 
  
+  };
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
   return (
+    <>
     <div className="all-form mx-auto w-[90%] md:w-[80%] lg:w-[70%] shadow-xl mb-10">
       <form onSubmit={(e) => handleFormSubmit(e)} autoComplete="off">
         <div className="sm:flex both-side-form colorWhite">
@@ -90,6 +144,7 @@ const FormSponsor = () => {
                 className="w-full bg-grayform text-white rounded py-4 px-4 border-none mt-10 font-medium font-DMSansmedium"
                 name="organizationName"
                 placeholder="Org / College name"
+                value={userDetails.organizationName}
                 onChange={(e) => {
                   setvalidaiton({ ...isValid, organizationName: true });
                   handleInputChange(e);
@@ -108,6 +163,7 @@ const FormSponsor = () => {
                 className="w-full bg-grayform text-white rounded py-4 px-4 border-none font-medium font-DMSansmedium"
                 name="address"
                 placeholder="Address"
+                value={userDetails.address}
                 onChange={(e) => {
                   setvalidaiton({ ...isValid, address: true });
                   handleInputChange(e);
@@ -127,6 +183,7 @@ const FormSponsor = () => {
                   className="w-[100%] bg-grayform text-white rounded py-4 px-4 mb-3 border-none font-medium font-DMSansmedium"
                   name="date"
                   placeholder="date"
+                  value={userDetails.date}
                   onChange={(e) => {
                     setvalidaiton({ ...isValid, date: true });
                     handleInputChange(e);
@@ -155,6 +212,7 @@ const FormSponsor = () => {
                 className="w-full bg-grayform text-white rounded py-4 px-4 border-none mt-10 font-medium font-DMSansmedium"
                 name="userName"
                 placeholder="Name"
+                value={userDetails.userName}
                 onChange={(e) => {
                   setvalidaiton({ ...isValid, userName: true });
                   handleInputChange(e);
@@ -216,6 +274,7 @@ const FormSponsor = () => {
                 className="w-full  bg-grayform text-white rounded py-4 px-4 mb-3 border-none font-medium font-DMSansmedium"
                 name="email"
                 placeholder="Email"
+                value={userDetails.email}
                 onChange={(e) => {
                   setvalidaiton({ ...isValid, email: true });
                   handleInputChange(e);
@@ -239,6 +298,19 @@ const FormSponsor = () => {
         </div>
       </form>
     </div>
+    <ToastContainer
+        theme="dark"
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+    </>
   );
 };
 
