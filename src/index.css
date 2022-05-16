@@ -171,9 +171,8 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus{
   background-color: transparent !important;
 }
-.grecaptcha-badge {
-   opacity:0 !important;
-   /* visibility: hidden ; */
+.rc-anchor-normal-footer{
+   visibility: hidden !important; 
   }
 /* **** */
 
