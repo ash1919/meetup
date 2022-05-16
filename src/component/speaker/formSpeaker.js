@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import PhoneInput from "react-phone-input-2";
-import { speakerDetails } from "../const/speakerData";
 import "react-phone-input-2/lib/style.css";
 import "flowbite";
-import { url } from "../const/apiurl";
+import { url } from "../const/constants";
 import Axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

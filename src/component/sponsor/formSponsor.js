@@ -6,7 +6,7 @@ import Axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
-import { url } from "../const/apiurl";
+import { url } from  "../const/constants";
 const FormSponsor = () => {
   const { executeRecaptcha } = useGoogleReCaptcha();
 
