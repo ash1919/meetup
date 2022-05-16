@@ -2,11 +2,12 @@ import React, { useEffect, useState, useRef } from "react";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import "flowbite";
-import Axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
-import { url } from  "../const/constants";
+import { requestSponsor } from "../utils/apis/sponsorFormApi";
+
+
 const FormSponsor = () => {
   const { executeRecaptcha } = useGoogleReCaptcha();
 
@@ -38,11 +39,11 @@ const FormSponsor = () => {
   });
   const inputOrganization = useRef(null);
   const inputAddress = useRef(null);
-  const inputMode = useRef(null);
   const inputDate = useRef(null);
   const inputName = useRef(null);
   const inputPhoneNumber = useRef(null);
   const inputEmail = useRef(null);
+
   const [number, setNumber] = useState();
   const [userDetails, setUserDetails] = useState(userDetailsInit);
 
@@ -110,12 +111,11 @@ const FormSponsor = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    const recaptchaValue = await handleReCaptchaVerify();
 
     const val = validateForm();
-    const urlPath = `${url.endPoint}/sponsor`;
     let dateEvent = userDetails;
     dateEvent = new Date().toISOString();
+
     const formData = {
       organizationName: userDetails.organizationName,
       address: userDetails.address,
@@ -129,20 +129,28 @@ const FormSponsor = () => {
     };
 
     if (val) {
-      try {
-        const response = await Axios.post(urlPath, {
-          ...formData,
-          "g-recaptcha-response": recaptchaValue,
-        });
-        if (response.status === 201) {
-          toast.success("Speaker form submitted Successfully");
-          setUserDetails(userDetailsInit);
-          setNumber(userDetails.isdCode);
-        }
-        console.log(userDetails);
-      } catch (error) {
-        toast.error(error.message);
+      const recaptchaValue = await handleReCaptchaVerify();
+      const response = await requestSponsor({ formData, recaptchaValue });
+      if (response.status === 201) {
+        toast.success("Sponsor form submitted Successfully");
+        setUserDetails(userDetailsInit);
+        setNumber(userDetails.isdCode);
       }
+      toast.error(response.message);
+      // try {
+      //   const response = await Axios.post(urlPath, {
+      //     ...formData,
+      //     "g-recaptcha-response": recaptchaValue,
+      //   });
+      //   if (response.status === 201) {
+      //     toast.success("Speaker form submitted Successfully");
+      //     setUserDetails(userDetailsInit);
+      //     setNumber(userDetails.isdCode);
+      //   }
+      //   console.log(userDetails);
+      // } catch (error) {
+      //   toast.error(error.message);
+      // }
     }
   };
   useEffect(() => {

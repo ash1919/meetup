@@ -1,47 +1,32 @@
 import React, { useEffect, useState } from "react";
-import ReactDOM from "react-dom/client";
 import SearchBar from "./searchBar";
-import { url } from  "../const/constants";
-import Axios from "axios";
+import { url } from "../const/constants";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { getFilterSpeaker, getSpeakerDetails } from "../utils/apis/speakerApi";
 
 const ListOfSpeakers = () => {
   const [filterSpeakers, setFilterSpeakers] = useState([]);
 
-  const getSpeakerDetails = async () => {
-    const path = url.endPoint + "/speakers/?skip=0&limit=100";
-
-    try {
-      const response = await Axios.get(path);
-      if (response.status === 200) {
-        setFilterSpeakers(response.data.speakers);
-      }
-      return;
-    } catch (err) {
-      toast.error(err.message);
+  const speakerDetails = async () => {
+    const response = await getSpeakerDetails();
+    if (response.status === 200) {
+      setFilterSpeakers(response.data.speakers);
     }
+    toast.error(response.message);
   };
+
   const filter = async (value) => {
-    const searcPath =
-      `${url.endPoint}/speakers/?skip=0&limit=100` +
-      (value.length !== 0 ? "&search=" + value : "");
-    const res = await Axios.get(searcPath);
-
-    try {
-      if (res.status === 200) {
-        setFilterSpeakers(res.data.speakers);
-      }
-    } catch (error) {
-      if (error.response.status === 400) setFilterSpeakers([]);
+    const response = await getFilterSpeaker(value);
+    if (response.status === 200) {
+      setFilterSpeakers(response.data.speakers);
     }
+    toast.error(response.message);
   };
- 
 
   useEffect(() => {
-    getSpeakerDetails();
+    speakerDetails();
   }, []);
- 
 
   return (
     <>
@@ -82,56 +67,54 @@ const ListOfSpeakers = () => {
                         Social media links
                       </p>
                       <div className="flex space-x-3 pl-0 items-center mb-12 text-white">
-                        {Object.keys(filterSpeaker.social).map(
-                          (key, index) => (
-                            <div key={index}>
-                              {key === "facebook" ? (
-                                <>
-                                  <a href={filterSpeaker.social[key]}>
-                                    <img
-                                      src="/images/fb-svg.svg"
-                                      alt="facebook"
-                                      className="w-5"
-                                    />
-                                  </a>
-                                </>
-                              ) : null}
-                              {key === "github" ? (
-                                <>
-                                  <a href={filterSpeaker.social[key]}>
-                                    <img
-                                      src="/images/yt-svg.svg"
-                                      alt="github"
-                                      className="w-5"
-                                    />
-                                  </a>
-                                </>
-                              ) : null}
-                              {key === "macbook" ? (
-                                <>
-                                  <a href={filterSpeaker.social[key]}>
-                                    <img
-                                      src="/images/twitter-svg.svg"
-                                      alt="twitter"
-                                      className="w-5"
-                                    />
-                                  </a>
-                                </>
-                              ) : null}
-                               {key === "linkedin" ? (
-                                <>
-                                  <a href={filterSpeaker.social[key]}>
-                                    <img
-                                      src="/images/linkdin-svg.svg"
-                                      alt="twitter"
-                                      className="w-5"
-                                    />
-                                  </a>
-                                </>
-                              ) : null}
-                            </div>
-                          )
-                        )}
+                        {Object.keys(filterSpeaker.social).map((key, index) => (
+                          <div key={index}>
+                            {key === "facebook" ? (
+                              <>
+                                <a href={filterSpeaker.social[key]}>
+                                  <img
+                                    src="/images/fb-svg.svg"
+                                    alt="facebook"
+                                    className="w-5"
+                                  />
+                                </a>
+                              </>
+                            ) : null}
+                            {key === "github" ? (
+                              <>
+                                <a href={filterSpeaker.social[key]}>
+                                  <img
+                                    src="/images/yt-svg.svg"
+                                    alt="github"
+                                    className="w-5"
+                                  />
+                                </a>
+                              </>
+                            ) : null}
+                            {key === "macbook" ? (
+                              <>
+                                <a href={filterSpeaker.social[key]}>
+                                  <img
+                                    src="/images/twitter-svg.svg"
+                                    alt="twitter"
+                                    className="w-5"
+                                  />
+                                </a>
+                              </>
+                            ) : null}
+                            {key === "linkedin" ? (
+                              <>
+                                <a href={filterSpeaker.social[key]}>
+                                  <img
+                                    src="/images/linkdin-svg.svg"
+                                    alt="twitter"
+                                    className="w-5"
+                                  />
+                                </a>
+                              </>
+                            ) : null}
+                          </div>
+                        ))}
                       </div>
                     </div>
                   ))}

@@ -2,11 +2,11 @@ import React, { useState, useEffect, useRef } from "react";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import "flowbite";
-import { url } from "../const/constants";
-import Axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import { getSpeakerDetails } from "../utils/apis/speakerApi";
+import { requestSpeaker } from "../utils/apis/speakerFormApi";
 
 const FormSpeaker = () => {
   const { executeRecaptcha } = useGoogleReCaptcha();
@@ -106,7 +106,6 @@ const FormSpeaker = () => {
     }
     if (!userDetails.name.replace(/\s/g, "").length) {
       setvalidaiton({ ...isValid, name: false });
-      console.log("inputname:", inputName.current);
       inputName.current.scrollIntoView({ behavior: "smooth", block: "center" });
       return false;
     }
@@ -133,24 +132,16 @@ const FormSpeaker = () => {
     return true;
   };
 
-  const getSpeakerDetails = async () => {
-    const path = url.endPoint + "/speakers/?skip=0&limit=100";
-    try {
-      const response = await Axios.get(path);
-      if (response.status === 200) {
-        setSpeakerdetails(response.data.speakers);
-      }
-    } catch (err) {
-      toast.error(err.message);
+  const getSpeakersName = async () => {
+    const response = await getSpeakerDetails();
+    if (response.status === 200) {
+      setSpeakerdetails(response.data.speakers);
     }
+    toast.error(response.message);
   };
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-
-    const recaptchaValue = await handleReCaptchaVerify();
-
-    const urlPath = url.endPoint + "/speakers/request";
     const val = validateForm();
 
     let dateEvent = userDetails;
@@ -170,24 +161,19 @@ const FormSpeaker = () => {
       numberOfAttendees: userDetails.numberOfAttendees,
     };
     if (val) {
-      try {
-        const response = await Axios.post(urlPath, {
-          ...formData,
-          "g-recaptcha-response": recaptchaValue,
-        });
-        if (response.status === 201) {
-          toast.success("Speaker form submitted Successfully");
-          setUserDetails(userDetailsInit);
-          setNumber(userDetails.isdCode);
-        }
-      } catch (error) {
-        toast.error(error.message);
+      const recaptchaValue = await handleReCaptchaVerify();
+      const response = await requestSpeaker({ formData, recaptchaValue });
+      if (response.status === 201) {
+        toast.success("Speaker form submitted Successfully");
+        setUserDetails(userDetailsInit);
+        setNumber(userDetails.isdCode);
       }
+      toast.error(response.message);
     }
   };
 
   useEffect(() => {
-    getSpeakerDetails();
+    getSpeakersName();
     window.scrollTo(0, 0);
   }, []);
 
